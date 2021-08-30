@@ -4,6 +4,13 @@ from time import sleep
 from pynput.keyboard import Controller
 from Button import Button
 
+OPACITY = 0.6
+RED = (0, 0, 255)
+WINDOW_X = 50
+WINDOW_Y = 50
+SIZE = [75, 75]
+SPACE = 5
+
 cap = cv2.VideoCapture(0)
 cap.set(3, 1920)
 cap.set(4, 1080)
@@ -23,8 +30,8 @@ def drawAll(img, buttons):
 buttons = []
 for i in range(len(keys)):
     for j, key in enumerate(keys[i]):
-        if (key == " "): buttons.append(Button([125, 50+i*80], key, [645, 75]))
-        else : buttons.append(Button([50+j*80, 50+i*80], key, [75, 75]))
+        if (key == " "): buttons.append(Button([130, WINDOW_Y+i*(SIZE[1] + SPACE)], key, [SIZE[0] * 8 + SPACE * 7, SIZE[1]]))
+        else : buttons.append(Button([WINDOW_X+j*(SIZE[0] + SPACE), WINDOW_Y+i*(SIZE[1] + SPACE)], key, SIZE))
 
 while True:
     success, img = cap.read()
@@ -41,7 +48,7 @@ while True:
                 button.focus()
                 l,_,_ = detector.findDistance(8, 12, img)
                 if (l<35):
-                    button.setColor((0,0,255))
+                    button.setColor(RED)
                     keyboard.press(button.getText())
                     sleep(0.30)
             else:
